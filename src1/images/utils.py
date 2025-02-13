@@ -84,7 +84,7 @@ def find_removals(base_image, test_image):
     return base_binary
 
 
-def get_cordinates(base_image, base_binary):
+def get_cordinates(base_image, base_binary, color="red"):
     contours, _ = cv2.findContours(base_binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
     # Calculate bounding boxes for each contour
@@ -99,14 +99,10 @@ def get_cordinates(base_image, base_binary):
     for (x, y, w, h),area in zip(bounding_boxes, areas):
         print("area", area)
         if area>=50:
-            cv2.rectangle(image_with_boxes, (x, y), (x + w, y + h), 255, 10)  # Green box with thickness 2
+            if color=="red":
+                cv2.rectangle(image_with_boxes, (x, y), (x + w, y + h), (255,0,0), 10)
+            if color=="blue":
+                cv2.rectangle(image_with_boxes, (x, y), (x + w, y + h), (0,0,255), 10)
             filtered_bboxes.append([x,y,w,h])
     
     return image_with_boxes, filtered_bboxes
-
-
-
-
-# Example usage:
-# meta = get_file_meta("example.jpg")
-# print(meta)
